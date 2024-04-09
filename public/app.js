@@ -3,11 +3,15 @@ function App() {
   const [activities, setActivities] = React.useState("");
   const [edit, setEdit] = React.useState({});
   const [todos, setTodos] = React.useState([]);
+  const [message, setMessage] = React.useState("");
   function generateId() {
     return Date.now();
   }
   function saveTodoHandler(event) {
     event.preventDefault();
+    if (!activities) {
+      return setMessage("Aktifitas tidak boleh kosong");
+    }
     if (edit.id) {
       const updateTodo = {
         id: edit.id,
@@ -26,6 +30,7 @@ function App() {
       activities
     }]);
     setActivities("");
+    setMessage("");
     // console.log(todos);
   }
   function removeTodoHandler(todoId) {
@@ -44,7 +49,11 @@ function App() {
     setEdit({});
     setActivities("");
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Simple Todo List"), /*#__PURE__*/React.createElement("form", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Simple Todo List"), message && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "red"
+    }
+  }, message), /*#__PURE__*/React.createElement("form", {
     action: "",
     onSubmit: saveTodoHandler
   }, /*#__PURE__*/React.createElement("input", {
@@ -58,7 +67,7 @@ function App() {
     type: "submit"
   }, edit.id ? "Simpan Perubahan" : "Tambah"), edit.id && /*#__PURE__*/React.createElement("button", {
     onClick: cancelEditHandler
-  }, "Batal Edit")), /*#__PURE__*/React.createElement("ul", null, todos.map(todo => {
+  }, "Batal Edit")), todos.length > 0 ? /*#__PURE__*/React.createElement("ul", null, todos.map(todo => {
     return /*#__PURE__*/React.createElement("li", {
       key: todo.id
     }, todo.activities, /*#__PURE__*/React.createElement("button", {
@@ -66,6 +75,6 @@ function App() {
     }, "Edit"), /*#__PURE__*/React.createElement("button", {
       onClick: removeTodoHandler.bind(this, todo.id)
     }, "Hapus"));
-  })));
+  })) : /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("i", null, "Belum ada aktifitas")));
 }
 ReactDOM.render( /*#__PURE__*/React.createElement(App, null), root);

@@ -4,6 +4,7 @@ function App() {
   const [activities, setActivities] = React.useState("");
   const [edit, setEdit] = React.useState({});
   const [todos, setTodos] = React.useState([]);
+  const [message, setMessage] = React.useState("");
 
   function generateId() {
     return Date.now();
@@ -11,6 +12,10 @@ function App() {
 
   function saveTodoHandler(event) {
     event.preventDefault();
+
+    if (!activities) {
+      return setMessage("Aktifitas tidak boleh kosong");
+    }
 
     if (edit.id) {
       const updateTodo = {
@@ -37,6 +42,7 @@ function App() {
       },
     ]);
     setActivities("");
+    setMessage("");
     // console.log(todos);
   }
 
@@ -62,6 +68,9 @@ function App() {
   return (
     <>
       <h1>Simple Todo List</h1>
+
+      {message && <div style={{ color: "red" }}>{message}</div>}
+
       <form action="" onSubmit={saveTodoHandler}>
         <input
           type="text"
@@ -74,19 +83,25 @@ function App() {
         <button type="submit">{edit.id ? "Simpan Perubahan" : "Tambah"}</button>
         {edit.id && <button onClick={cancelEditHandler}>Batal Edit</button>}
       </form>
-      <ul>
-        {todos.map((todo) => {
-          return (
-            <li key={todo.id}>
-              {todo.activities}
-              <button onClick={editTodoHandler.bind(this, todo)}>Edit</button>
-              <button onClick={removeTodoHandler.bind(this, todo.id)}>
-                Hapus
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      {todos.length > 0 ? (
+        <ul>
+          {todos.map((todo) => {
+            return (
+              <li key={todo.id}>
+                {todo.activities}
+                <button onClick={editTodoHandler.bind(this, todo)}>Edit</button>
+                <button onClick={removeTodoHandler.bind(this, todo.id)}>
+                  Hapus
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p>
+          <i>Belum ada aktifitas</i>
+        </p>
+      )}
     </>
   );
 }

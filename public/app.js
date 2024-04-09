@@ -12,9 +12,10 @@ function App() {
     if (!activities) {
       return setMessage("Aktifitas tidak boleh kosong");
     }
+    setMessage("");
     if (edit.id) {
       const updateTodo = {
-        id: edit.id,
+        ...edit,
         activities
       };
       const editTodoIndex = todos.findIndex(function (todo) {
@@ -27,10 +28,10 @@ function App() {
     }
     setTodos([...todos, {
       id: generateId(),
-      activities
+      activities,
+      done: false
     }]);
     setActivities("");
-    setMessage("");
     // console.log(todos);
   }
   function removeTodoHandler(todoId) {
@@ -48,6 +49,19 @@ function App() {
   function cancelEditHandler() {
     setEdit({});
     setActivities("");
+  }
+  function doneTodoHandler(todo) {
+    const updatedTodo = {
+      ...todo,
+      done: todo.done ? false : true
+    };
+    const editTodoIndex = todos.findIndex(function (currentTodo) {
+      return currentTodo.id === todo.id;
+    });
+    const updatedTodos = [...todos];
+    updatedTodos[editTodoIndex] = updatedTodo;
+    setTodos(updatedTodos);
+    console.log(updatedTodos);
   }
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Simple Todo List"), message && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -70,7 +84,11 @@ function App() {
   }, "Batal Edit")), todos.length > 0 ? /*#__PURE__*/React.createElement("ul", null, todos.map(todo => {
     return /*#__PURE__*/React.createElement("li", {
       key: todo.id
-    }, todo.activities, /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "checkbox",
+      checked: todo.done,
+      onChange: doneTodoHandler.bind(this, todo)
+    }), todo.activities, "(", todo.done ? "Selesai" : "Belum Selesai", ")", /*#__PURE__*/React.createElement("button", {
       onClick: editTodoHandler.bind(this, todo)
     }, "Edit"), /*#__PURE__*/React.createElement("button", {
       onClick: removeTodoHandler.bind(this, todo.id)

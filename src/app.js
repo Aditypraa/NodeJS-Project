@@ -16,10 +16,11 @@ function App() {
     if (!activities) {
       return setMessage("Aktifitas tidak boleh kosong");
     }
+    setMessage("");
 
     if (edit.id) {
       const updateTodo = {
-        id: edit.id,
+        ...edit,
         activities,
       };
 
@@ -39,10 +40,10 @@ function App() {
       {
         id: generateId(),
         activities,
+        done: false,
       },
     ]);
     setActivities("");
-    setMessage("");
     // console.log(todos);
   }
 
@@ -63,6 +64,22 @@ function App() {
   function cancelEditHandler() {
     setEdit({});
     setActivities("");
+  }
+
+  function doneTodoHandler(todo) {
+    const updatedTodo = {
+      ...todo,
+      done: todo.done ? false : true,
+    };
+    const editTodoIndex = todos.findIndex(function (currentTodo) {
+      return currentTodo.id === todo.id;
+    });
+
+    const updatedTodos = [...todos];
+    updatedTodos[editTodoIndex] = updatedTodo;
+
+    setTodos(updatedTodos);
+    console.log(updatedTodos);
   }
 
   return (
@@ -88,7 +105,12 @@ function App() {
           {todos.map((todo) => {
             return (
               <li key={todo.id}>
-                {todo.activities}
+                <input
+                  type="checkbox"
+                  checked={todo.done}
+                  onChange={doneTodoHandler.bind(this, todo)}
+                />
+                {todo.activities}({todo.done ? "Selesai" : "Belum Selesai"})
                 <button onClick={editTodoHandler.bind(this, todo)}>Edit</button>
                 <button onClick={removeTodoHandler.bind(this, todo.id)}>
                   Hapus

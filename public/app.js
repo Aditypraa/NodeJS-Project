@@ -18,7 +18,8 @@ function App() {
       });
       const updatedTodos = [...todos];
       updatedTodos[editTodoIndex] = updateTodo;
-      return setTodos(updatedTodos);
+      setTodos(updatedTodos);
+      return cancelEditHandler();
     }
     setTodos([...todos, {
       id: generateId(),
@@ -32,11 +33,16 @@ function App() {
       return todo.id !== todoId;
     });
     setTodos(filteredTodos);
+    if (edit.id) cancelEditHandler();
   }
   function editTodoHandler(todo) {
     setActivities(todo.activities);
     setEdit(todo);
     // console.log(todo);
+  }
+  function cancelEditHandler() {
+    setEdit({});
+    setActivities("");
   }
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h1", null, "Simple Todo List"), /*#__PURE__*/React.createElement("form", {
     action: "",
@@ -50,7 +56,9 @@ function App() {
     }
   }), /*#__PURE__*/React.createElement("button", {
     type: "submit"
-  }, edit.id ? "Simpan Perubahan" : "Tambah")), /*#__PURE__*/React.createElement("ul", null, todos.map(todo => {
+  }, edit.id ? "Simpan Perubahan" : "Tambah"), edit.id && /*#__PURE__*/React.createElement("button", {
+    onClick: cancelEditHandler
+  }, "Batal Edit")), /*#__PURE__*/React.createElement("ul", null, todos.map(todo => {
     return /*#__PURE__*/React.createElement("li", {
       key: todo.id
     }, todo.activities, /*#__PURE__*/React.createElement("button", {

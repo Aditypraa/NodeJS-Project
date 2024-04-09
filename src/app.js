@@ -25,7 +25,8 @@ function App() {
       const updatedTodos = [...todos];
       updatedTodos[editTodoIndex] = updateTodo;
 
-      return setTodos(updatedTodos);
+      setTodos(updatedTodos);
+      return cancelEditHandler();
     }
 
     setTodos([
@@ -44,12 +45,18 @@ function App() {
       return todo.id !== todoId;
     });
     setTodos(filteredTodos);
+    if (edit.id) cancelEditHandler();
   }
 
   function editTodoHandler(todo) {
     setActivities(todo.activities);
     setEdit(todo);
     // console.log(todo);
+  }
+
+  function cancelEditHandler() {
+    setEdit({});
+    setActivities("");
   }
 
   return (
@@ -65,6 +72,7 @@ function App() {
           }}
         />
         <button type="submit">{edit.id ? "Simpan Perubahan" : "Tambah"}</button>
+        {edit.id && <button onClick={cancelEditHandler}>Batal Edit</button>}
       </form>
       <ul>
         {todos.map((todo) => {

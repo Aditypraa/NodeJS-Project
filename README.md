@@ -1,6 +1,4 @@
-![Node.js](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original-wordmark.svg) 
-
-<h1 align="center" style="font-size:50px">Node.js Projects</h1>
+# <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original-wordmark.svg" alt="Node.js" width="100" height="100"> Node.js Projects
 
 Welcome to my Node.js Projects repository! This branch contains a collection of simple projects that I have created to showcase my skills and expertise in Node.js development. Each project is designed to highlight different aspects of Node.js, from building RESTful APIs to integrating databases and creating synergistic frontends with the React framework. Explore the projects, and feel free to leave feedback or contribute!
 
